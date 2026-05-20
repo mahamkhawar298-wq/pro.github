@@ -1,0 +1,875 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+  <title>Wander.pk • Flights, Buses, Hotels & Tours – Build Your Package</title>
+  <!-- Fonts & Icons -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Inter', sans-serif; background: #f5f7fb; color: #1a2639; line-height: 1.5; scroll-behavior: smooth; }
+    .container { max-width: 1280px; margin: 0 auto; padding: 0 24px; }
+    button, .btn { cursor: pointer; border: none; font-family: inherit; transition: all 0.2s; }
+    .btn-primary { background: #0a3d62; color: white; padding: 12px 28px; border-radius: 40px; font-weight: 600; box-shadow: 0 8px 16px rgba(10,61,98,0.15); }
+    .btn-primary:hover { background: #0c4a6e; transform: translateY(-2px); }
+    .btn-outline { border: 1.5px solid #0a3d62; color: #0a3d62; padding: 10px 24px; border-radius: 40px; font-weight: 600; background: white; }
+    .btn-outline:hover { background: #0a3d62; color: white; }
+    .section-title { font-size: 2rem; font-weight: 700; margin-bottom: 32px; color: #0b2b40; position: relative; display: inline-block; }
+    .section-title:after { content: ''; position: absolute; bottom: -10px; left: 0; width: 70px; height: 4px; background: #e67e22; border-radius: 4px; }
+    .navbar { background: white; box-shadow: 0 4px 20px rgba(0,0,0,0.03); position: sticky; top: 0; z-index: 100; padding: 16px 0; }
+    .navbar .container { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; }
+    .logo { font-size: 1.8rem; font-weight: 800; color: #0a3d62; } .logo span { color: #e67e22; }
+    .nav-links { display: flex; gap: 32px; align-items: center; }
+    .nav-links a { text-decoration: none; color: #2c3e50; font-weight: 500; } .nav-links a:hover { color: #0a3d62; }
+    .login-btn { background: #0a3d62; color: white !important; padding: 10px 22px; border-radius: 30px; font-weight: 600; }
+    .user-greeting { display: flex; align-items: center; gap: 8px; background: #eef2f6; padding: 8px 16px; border-radius: 30px; font-weight: 500; }
+    .cart-icon { position: relative; margin-left: 8px; } .cart-btn { background: none; border: none; font-size: 1.5rem; color: #0a3d62; position: relative; }
+    .cart-count { position: absolute; top: -8px; right: -10px; background: #e67e22; color: white; border-radius: 50%; width: 22px; height: 22px; font-size: 0.75rem; display: flex; align-items: center; justify-content: center; font-weight: bold; }
+    .flight-banner { background: linear-gradient(135deg, #0a3d62 0%, #1a5276 100%); color: white; padding: 12px 0; text-align: center; font-weight: 500; letter-spacing: 0.3px; } .flight-banner i { margin: 0 8px; }
+    .hero { background: linear-gradient(104deg, rgba(10,61,98,0.8) 0%, rgba(0,0,0,0.5) 100%), url('https://images.pexels.com/photos/2901209/pexels-photo-2901209.jpeg?auto=compress&cs=tinysrgb&w=1200&h=750&dpr=2') center/cover; padding: 80px 0 100px; color: white; margin-bottom: 40px; }
+    .hero h1 { font-size: 3.2rem; font-weight: 800; line-height: 1.2; margin-bottom: 20px; } .hero p { font-size: 1.2rem; margin-bottom: 40px; opacity: 0.95; }
+    .search-box { background: white; padding: 12px; border-radius: 60px; display: flex; align-items: center; box-shadow: 0 20px 30px rgba(0,0,0,0.2); max-width: 800px; }
+    .search-item { flex: 1; display: flex; align-items: center; padding: 0 16px; border-right: 1px solid #e0e0e0; } .search-item:last-of-type { border-right: none; }
+    .search-item i { color: #0a3d62; margin-right: 12px; font-size: 1.2rem; } .search-item input, .search-item select { border: none; outline: none; font-size: 1rem; width: 100%; background: transparent; }
+    .search-btn { background: #e67e22; color: white; padding: 14px 30px; border-radius: 40px; font-weight: 700; margin-left: 8px; box-shadow: 0 4px 12px rgba(230,126,34,0.3); }
+    .poster-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 20px; margin: 40px 0; }
+    .city-card { background: white; border-radius: 20px; overflow: hidden; box-shadow: 0 10px 20px rgba(0,0,0,0.05); transition: transform 0.2s; cursor: pointer; } .city-card:hover { transform: translateY(-5px); }
+    .city-img { height: 140px; background-size: cover; background-position: center; background-color: #e2e8f0; } .city-info { padding: 16px; text-align: center; } .city-name { font-weight: 700; font-size: 1.2rem; margin-bottom: 4px; } .city-route { color: #7f8c8d; font-size: 0.9rem; }
+    .filters-section { margin: 30px 0 20px; display: flex; flex-wrap: wrap; gap: 16px; align-items: center; justify-content: space-between; } .filter-group { display: flex; gap: 12px; flex-wrap: wrap; }
+    .filter-select { padding: 10px 20px; border-radius: 30px; border: 1px solid #ddd; background: white; font-weight: 500; }
+    .tours-grid, .hotels-grid, .flights-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 30px; margin-bottom: 30px; }
+    .tour-card, .hotel-card, .flight-card { background: white; border-radius: 24px; overflow: hidden; box-shadow: 0 15px 30px rgba(0,0,0,0.05); transition: all 0.3s; cursor: pointer; } .tour-card:hover, .hotel-card:hover, .flight-card:hover { transform: translateY(-8px); box-shadow: 0 25px 40px rgba(10,61,98,0.12); }
+    .card-img { height: 200px; background-size: cover; background-position: center; background-color: #cbd5e1; position: relative; }
+    .card-img[data-error="true"] { background-image: none !important; background-color: #b0c4de; display: flex; align-items: center; justify-content: center; color: #2c3e50; font-size: 2rem; }
+    .tour-badge, .hotel-badge, .flight-badge { position: absolute; top: 16px; right: 16px; background: #e67e22; color: white; padding: 6px 14px; border-radius: 30px; font-size: 0.8rem; font-weight: 700; }
+    .card-content { padding: 24px 20px 20px; } .tour-location, .hotel-location, .flight-route { display: flex; align-items: center; gap: 8px; color: #7f8c8d; margin-bottom: 8px; }
+    .tour-title, .hotel-title, .flight-title { font-size: 1.4rem; font-weight: 700; margin-bottom: 12px; } .tour-meta, .hotel-meta, .flight-meta { display: flex; gap: 20px; margin-bottom: 18px; color: #34495e; }
+    .price-row { display: flex; align-items: center; justify-content: space-between; border-top: 1px solid #ecf0f1; padding-top: 18px; } .price { font-size: 1.6rem; font-weight: 800; color: #0a3d62; }
+    .cart-add-btn { background: #e67e22; color: white; padding: 10px 18px; border-radius: 40px; font-weight: 600; } .cart-add-btn i { margin-right: 6px; }
+    .pagination { display: flex; justify-content: center; gap: 12px; margin: 40px 0 20px; } .page-btn { width: 45px; height: 45px; border-radius: 12px; background: white; border: 1px solid #dee2e6; font-weight: 600; color: #0a3d62; } .page-btn.active { background: #0a3d62; color: white; border-color: #0a3d62; }
+    .bus-section { background: white; border-radius: 32px; padding: 30px; margin: 50px 0; box-shadow: 0 15px 30px rgba(0,0,0,0.05); }
+    .bus-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 24px; margin-top: 24px; } .bus-card { background: #f9fafc; border-radius: 20px; overflow: hidden; box-shadow: 0 5px 15px rgba(0,0,0,0.03); border: 1px solid #eef2f6; cursor: pointer; transition: 0.2s; } .bus-card:hover { transform: translateY(-5px); box-shadow: 0 15px 25px rgba(0,0,0,0.05); }
+    .bus-img { height: 160px; background-size: cover; background-position: center; background-color: #cbd5e1; } .bus-details { padding: 20px; } .bus-route { font-weight: 700; font-size: 1.2rem; margin-bottom: 8px; } .bus-operator { color: #7f8c8d; margin-bottom: 12px; } .bus-price { font-size: 1.4rem; font-weight: 800; color: #0a3d62; margin-bottom: 16px; }
+    .route-table { width: 100%; border-collapse: collapse; } .route-table th { text-align: left; padding: 16px 8px; border-bottom: 2px solid #0a3d62; color: #0a3d62; } .route-table td { padding: 14px 8px; border-bottom: 1px solid #ecf0f1; }
+    .route-table tbody tr { cursor: pointer; transition: background 0.2s; } .route-table tbody tr:hover { background: #f0f4fa; }
+    .contact-section { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; background: white; border-radius: 32px; padding: 40px; margin: 50px 0; box-shadow: 0 15px 30px rgba(0,0,0,0.05); } .contact-info i { width: 30px; color: #0a3d62; }
+    .contact-form input, .contact-form textarea { width: 100%; padding: 14px; border: 1.5px solid #e2e8f0; border-radius: 16px; margin-bottom: 20px; font-family: inherit; } .submit-contact { background: #0a3d62; color: white; padding: 14px 30px; border-radius: 40px; font-weight: 700; width: 100%; }
+    .footer { background: #0b2b40; color: #ecf0f1; padding: 48px 0 24px; margin-top: 60px; } .footer-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 40px; } .footer-col h4 { color: white; margin-bottom: 20px; } .footer-col ul { list-style: none; } .footer-col li { margin-bottom: 12px; } .footer-col a { color: #bdc3c7; text-decoration: none; }
+    .social-icons { display: flex; gap: 16px; margin-top: 16px; } .social-icons a { color: white; background: #1e4b63; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+    .modal-overlay { position: fixed; top:0; left:0; width:100%; height:100%; background: rgba(0,0,0,0.5); backdrop-filter: blur(4px); display: flex; align-items: center; justify-content: center; z-index: 1000; visibility: hidden; opacity: 0; transition: 0.2s; } .modal-overlay.active { visibility: visible; opacity: 1; }
+    .cart-modal, .auth-modal, .receipt-modal, .detail-modal { background: white; max-width: 650px; width: 90%; border-radius: 32px; padding: 32px; position: relative; max-height: 90vh; overflow-y: auto; } .modal-close { position: absolute; top: 20px; right: 24px; font-size: 1.8rem; cursor: pointer; }
+    .form-group { margin-bottom: 20px; } .form-group label { font-weight: 600; display: block; margin-bottom: 6px; } .form-group input, .form-group select { width: 100%; padding: 14px; border: 1.5px solid #e2e8f0; border-radius: 16px; }
+    .cart-item { display: flex; justify-content: space-between; align-items: center; padding: 16px 0; border-bottom: 1px solid #eee; } .cart-item-info { flex: 1; } .cart-item-title { font-weight: 600; } .cart-item-price { color: #0a3d62; font-weight: 700; }
+    .cart-item-quantity { display: flex; align-items: center; gap: 8px; margin: 8px 0; } .qty-btn { background: #eef2f6; border: none; width: 32px; height: 32px; border-radius: 8px; font-weight: bold; font-size: 1.2rem; } .cart-remove { color: #e74c3c; cursor: pointer; margin-left: 16px; }
+    .cart-total { text-align: right; font-size: 1.6rem; font-weight: 800; margin: 20px 0; } .receipt-details { background: #f9fafc; padding: 20px; border-radius: 20px; margin: 20px 0; } .receipt-row { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px dashed #ccc; } .receipt-total { font-size: 1.4rem; font-weight: 800; color: #0a3d62; text-align: right; margin-top: 16px; }
+    .variant-option { display: flex; align-items: center; justify-content: space-between; padding: 12px; border: 1px solid #e2e8f0; border-radius: 16px; margin-bottom: 12px; cursor: pointer; background: #fafafa; }
+    .variant-option.selected { border: 2px solid #0a3d62; background: #eef6ff; }
+    .detail-img { height: 220px; background-size: cover; background-position: center; border-radius: 20px; margin-bottom: 20px; }
+    .badge-info { display: inline-block; background: #e67e22; color: white; padding: 4px 12px; border-radius: 30px; font-size: 0.8rem; margin-right: 8px; }
+    .pay-later-option { background: #fef9e7; padding: 16px; border-radius: 20px; border: 1px dashed #e67e22; margin: 20px 0; }
+    /* NEW STYLES */
+    .lang-switch { margin-left: 20px; display: flex; gap: 8px; }
+    .lang-btn { background: none; border: 1px solid #0a3d62; color: #0a3d62; padding: 6px 12px; border-radius: 20px; font-weight: 600; }
+    .lang-btn.active { background: #0a3d62; color: white; }
+    .seat-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 8px; margin: 20px 0; }
+    .seat { background: #e2e8f0; padding: 12px; text-align: center; border-radius: 8px; cursor: pointer; }
+    .seat.selected { background: #0a3d62; color: white; }
+    .seat.unavailable { background: #ccc; cursor: not-allowed; opacity: 0.5; }
+    .rating-stars { color: #f1c40f; margin: 8px 0; font-size: 1.1rem; }
+    .admin-panel { background: white; border-radius: 20px; padding: 24px; margin: 30px 0; box-shadow: 0 10px 25px rgba(0,0,0,0.05); }
+    .track-btn { background: #27ae60; color: white; padding: 10px 20px; border-radius: 30px; margin-top: 15px; width: 100%; }
+    .tracking-stop { display: flex; align-items: center; margin: 8px 0; }
+    .tracking-stop .stop-num { width: 24px; height: 24px; background: #0a3d62; color: white; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; margin-right: 12px; }
+    @media (max-width: 768px) { .navbar .container { flex-direction: column; gap: 16px; } .nav-links { flex-wrap: wrap; justify-content: center; } .hero h1 { font-size: 2.2rem; } .search-box { flex-direction: column; background: transparent; box-shadow: none; gap: 10px; } .search-item { background: white; border-radius: 40px; padding: 8px 20px; width: 100%; } .contact-section { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+
+<!-- Language Toggle -->
+<div class="container" style="display:flex; justify-content:flex-end; padding-top:10px;">
+  <div class="lang-switch">
+    <button class="lang-btn active" data-lang="en">English</button>
+    <button class="lang-btn" data-lang="ur">اردو</button>
+  </div>
+</div>
+
+<!-- Flight message banner -->
+<div class="flight-banner">
+  <i class="fas fa-plane"></i> Flash Sale: Islamabad to Karachi from PKR 12,999 | Lahore to Dubai PKR 45,999 <i class="fas fa-tag"></i> Book by 30th Apr
+</div>
+
+<!-- Navbar -->
+<nav class="navbar">
+  <div class="container">
+    <div class="logo">Wan<span>der</span>.pk</div>
+    <div class="nav-links">
+      <a href="#home">Home</a>
+      <a href="#flights">Flights</a>
+      <a href="#tours">Tours</a>
+      <a href="#hotels">Hotels</a>
+      <a href="#buses">Buses</a>
+      <a href="#contact">Contact</a>
+      <span id="authArea"></span>
+      <span class="cart-icon">
+        <button class="cart-btn" id="cartToggleBtn"><i class="fas fa-shopping-cart"></i><span class="cart-count" id="cartCount">0</span></button>
+      </span>
+    </div>
+  </div>
+</nav>
+
+<!-- Hero with search -->
+<section id="home" class="hero">
+  <div class="container hero-content">
+    <h1>Flights • Buses • Hotels • Tours<br>All of Pakistan in one place</h1>
+    <p>Explore 50+ cities with trusted travel partners. Build your own package!</p>
+    <div class="search-box">
+      <div class="search-item">
+        <i class="fas fa-map-marker-alt"></i>
+        <input type="text" placeholder="From city or airport" id="searchFrom" value="Islamabad">
+      </div>
+      <div class="search-item">
+        <i class="fas fa-map-pin"></i>
+        <input type="text" placeholder="To city" id="searchDestination" value="">
+      </div>
+      <div class="search-item">
+        <i class="fas fa-calendar-alt"></i>
+        <input type="text" placeholder="Departure" onfocus="(this.type='date')">
+      </div>
+      <button class="search-btn" id="searchBtn"><i class="fas fa-search"></i> Search</button>
+    </div>
+  </div>
+</section>
+
+<!-- City Posters -->
+<div class="container">
+  <h2 class="section-title">Popular Cities & Routes</h2>
+  <div class="poster-grid">
+    <div class="city-card" data-city="Karachi">
+      <div class="city-img" style="background-image: url('https://images.pexels.com/photos/325193/pexels-photo-325193.jpeg?auto=compress&cs=tinysrgb&w=800');" onerror="this.style.backgroundImage='none';this.style.backgroundColor='#cbd5e1'"></div>
+      <div class="city-info"><div class="city-name">Karachi</div><div class="city-route">Flights • Buses • Tours</div></div>
+    </div>
+    <div class="city-card" data-city="Lahore">
+      <div class="city-img" style="background-image: url('https://images.pexels.com/photos/2901215/pexels-photo-2901215.jpeg?auto=compress&cs=tinysrgb&w=800');" onerror="this.style.backgroundImage='none';this.style.backgroundColor='#cbd5e1'"></div>
+      <div class="city-info"><div class="city-name">Lahore</div><div class="city-route">Cultural tours • 5+ daily buses</div></div>
+    </div>
+    <div class="city-card" data-city="Islamabad">
+      <div class="city-img" style="background-image: url('https://images.pexels.com/photos/1619317/pexels-photo-1619317.jpeg?auto=compress&cs=tinysrgb&w=800');" onerror="this.style.backgroundImage='none';this.style.backgroundColor='#cbd5e1'"></div>
+      <div class="city-info"><div class="city-name">Islamabad</div><div class="city-route">Northern areas hub</div></div>
+    </div>
+    <div class="city-card" data-city="Peshawar">
+      <div class="city-img" style="background-image: url('https://images.pexels.com/photos/450441/pexels-photo-450441.jpeg?auto=compress&cs=tinysrgb&w=800');" onerror="this.style.backgroundImage='none';this.style.backgroundColor='#cbd5e1'"></div>
+      <div class="city-info"><div class="city-name">Peshawar</div><div class="city-route">Historic tours • Bus services</div></div>
+    </div>
+    <div class="city-card" data-city="Naran">
+      <div class="city-img" style="background-image: url('https://images.pexels.com/photos/2086621/pexels-photo-2086621.jpeg?auto=compress&cs=tinysrgb&w=800');" onerror="this.style.backgroundImage='none';this.style.backgroundColor='#cbd5e1'"></div>
+      <div class="city-info"><div class="city-name">Naran</div><div class="city-route">Weekend getaways</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- Admin Panel (hidden by default) -->
+<div id="adminPanel" class="container admin-panel" style="display:none;">
+  <h2><i class="fas fa-user-shield"></i> Admin Dashboard</h2>
+  <div style="display:grid; grid-template-columns:1fr 1fr; gap:20px; margin-top:20px;">
+    <div>
+      <h3>Recent Bookings</h3>
+      <ul id="adminBookingsList"></ul>
+    </div>
+    <div>
+      <h3>Manage Items</h3>
+      <button class="btn-outline" id="addFlightBtn">Add Flight</button>
+      <button class="btn-outline" id="addHotelBtn">Add Hotel</button>
+    </div>
+  </div>
+</div>
+
+<!-- Flights Section -->
+<div id="flights" class="container">
+  <h2 class="section-title">Flight Deals</h2>
+  <div class="flights-grid" id="flightsContainer"></div>
+</div>
+
+<!-- Tours Section -->
+<div id="tours" class="container">
+  <h2 class="section-title">Tour Packages</h2>
+  <div class="filters-section">
+    <div class="filter-group">
+      <select class="filter-select" id="locationFilter">
+        <option value="all">All Locations</option>
+        <option value="Hunza">Hunza</option><option value="Skardu">Skardu</option><option value="Naran">Naran</option>
+        <option value="Swat">Swat</option><option value="Murree">Murree</option><option value="Neelum">Neelum</option>
+        <option value="Gwadar">Gwadar</option>
+      </select>
+      <select class="filter-select" id="priceFilter">
+        <option value="all">All Prices</option>
+        <option value="budget">Under 30k</option><option value="mid">30k-50k</option><option value="luxury">50k+</option>
+      </select>
+      <select class="filter-select" id="durationFilter">
+        <option value="all">Any Duration</option>
+        <option value="short">1-3 Days</option><option value="medium">4-6 Days</option><option value="long">7+ Days</option>
+      </select>
+    </div>
+    <button class="btn-outline" id="resetFilters"><i class="fas fa-undo-alt"></i> Reset</button>
+  </div>
+  <div class="tours-grid" id="toursContainer"></div>
+  <div class="pagination" id="pagination"></div>
+</div>
+
+<!-- Hotels / Hostels Section -->
+<div id="hotels" class="container">
+  <h2 class="section-title">Hotels & Hostels</h2>
+  <div class="hotels-grid" id="hotelsContainer"></div>
+</div>
+
+<!-- Bus Routes Section -->
+<div id="buses" class="container">
+  <div class="bus-section">
+    <h2 style="margin-bottom:24px;"><i class="fas fa-bus" style="color:#0a3d62; margin-right:12px;"></i>Popular Bus Services</h2>
+    <div class="bus-grid" id="busContainer"></div>
+    <h3 style="margin: 32px 0 16px;">All Bus Routes</h3>
+    <table class="route-table" id="busTable">
+      <thead><tr><th>Route</th><th>Operator</th><th>Departure</th><th>Price (PKR)</th><th></th></tr></thead>
+      <tbody id="busTableBody"></tbody>
+    </table>
+  </div>
+</div>
+
+<!-- Contact Section -->
+<div id="contact" class="container">
+  <div class="contact-section">
+    <div class="contact-info">
+      <h2 style="margin-bottom:24px;">Get in touch</h2>
+      <p style="margin-bottom:24px;"><i class="fas fa-phone-alt"></i> +92 300 1234567 (24/7 support)</p>
+      <p style="margin-bottom:24px;"><i class="fas fa-envelope"></i> hello@wander.pk</p>
+      <p style="margin-bottom:24px;"><i class="fas fa-map-marker-alt"></i> Plaza 32, Blue Area, Islamabad</p>
+      <div class="social-icons">
+        <a href="#"><i class="fab fa-facebook-f"></i></a>
+        <a href="#"><i class="fab fa-instagram"></i></a>
+        <a href="#"><i class="fab fa-twitter"></i></a>
+      </div>
+    </div>
+    <div class="contact-form">
+      <h3 style="margin-bottom:24px;">Send us a message</h3>
+      <form id="contactForm">
+        <input type="text" placeholder="Your Name" id="contactName" required>
+        <input type="email" placeholder="Email Address" id="contactEmail" required>
+        <textarea rows="4" placeholder="How can we help?"></textarea>
+        <button type="submit" class="submit-contact">Send Message</button>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- Footer -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-col">
+        <h4>Wander.pk</h4>
+        <p>Flights, buses, hotels, tours – all in one place. Build your custom travel package.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Quick Links</h4>
+        <ul><li><a href="#">About</a></li><li><a href="#">Careers</a></li><li><a href="#">Blog</a></li></ul>
+      </div>
+      <div class="footer-col">
+        <h4>Support</h4>
+        <ul><li><a href="#">Help Center</a></li><li><a href="#">Cancellation</a></li><li><a href="#contact">Contact</a></li></ul>
+      </div>
+    </div>
+    <div class="copyright">&copy; 2025 Wander.pk – Inspired by Pakistan's travel needs.</div>
+  </div>
+</footer>
+
+<!-- Cart Modal -->
+<div class="modal-overlay" id="cartModal">
+  <div class="cart-modal">
+    <span class="modal-close" id="closeCartModal">&times;</span>
+    <h3><i class="fas fa-shopping-cart"></i> Your Travel Package</h3>
+    <div id="cartItemsContainer" style="margin: 20px 0;"></div>
+    <div class="cart-total" id="cartTotal">Total: PKR 0</div>
+    <button class="btn-primary" id="checkoutFromCartBtn" style="width:100%;">Proceed to Checkout</button>
+    <button class="btn-outline" id="generateBillFromCartBtn" style="width:100%; margin-top:12px;"><i class="fas fa-file-invoice"></i> Generate Bill (Pay Later)</button>
+    <button class="btn-outline" id="clearCartBtn" style="width:100%; margin-top:8px;">Clear Cart</button>
+  </div>
+</div>
+
+<!-- Checkout Modal -->
+<div class="modal-overlay" id="checkoutModal">
+  <div class="cart-modal">
+    <span class="modal-close" id="closeCheckoutModal">&times;</span>
+    <h3>Complete Your Booking</h3>
+    <form id="checkoutForm">
+      <div class="form-group"><label>Full Name</label><input type="text" id="checkoutName" required></div>
+      <div class="form-group"><label>Email</label><input type="email" id="checkoutEmail" required></div>
+      <div class="form-group"><label>Phone</label><input type="tel" id="checkoutPhone" required></div>
+      <div class="pay-later-option">
+        <label style="display:flex; align-items:center; gap:10px;">
+          <input type="checkbox" id="payLaterCheckbox"> <span><strong>Pay Later (Generate Bill)</strong> – Pay within 3 days</span>
+        </label>
+      </div>
+      <div class="form-group" id="paymentMethodGroup">
+        <label>Payment Method</label>
+        <select id="checkoutPayment">
+          <option value="">-- Select payment method --</option>
+          <option value="Credit Card">Credit Card</option>
+          <option value="JazzCash">JazzCash</option>
+          <option value="EasyPaisa">EasyPaisa</option>
+          <option value="Bank Transfer">Bank Transfer</option>
+        </select>
+      </div>
+      <div class="cart-total" id="checkoutTotalDisplay">Total: PKR 0</div>
+      <button type="submit" class="btn-primary" style="width:100%;">Confirm & Pay</button>
+    </form>
+  </div>
+</div>
+
+<!-- Login / Signup Modal -->
+<div class="modal-overlay" id="authModal">
+  <div class="auth-modal">
+    <span class="modal-close" id="closeAuthModal">&times;</span>
+    <h3 id="authModalTitle">Login</h3>
+    <form id="authForm">
+      <div class="form-group"><label>Email</label><input type="email" id="authEmail" required></div>
+      <div class="form-group"><label>Password</label><input type="password" id="authPassword" required></div>
+      <div class="form-group" id="authNameGroup" style="display:none;"><label>Full Name</label><input type="text" id="authName"></div>
+      <button type="submit" class="submit-contact" id="authSubmitBtn">Login</button>
+      <p style="margin-top:16px; text-align:center;">
+        <span id="toggleAuthText">Don't have an account?</span> 
+        <a href="#" id="toggleAuthLink">Sign up</a>
+      </p>
+    </form>
+  </div>
+</div>
+
+<!-- Receipt Modal -->
+<div class="modal-overlay" id="receiptModal">
+  <div class="receipt-modal">
+    <span class="modal-close" id="closeReceiptModal">&times;</span>
+    <h3 style="margin-bottom:20px;"><i class="fas fa-receipt" style="color:#0a3d62;"></i> Booking Receipt</h3>
+    <div id="receiptContent"></div>
+    <button class="btn-primary" id="printReceiptBtn" style="width:100%; margin-top:20px;"><i class="fas fa-print"></i> Print Receipt</button>
+  </div>
+</div>
+
+<!-- DETAIL MODAL (for flights, hotels, tours, buses) -->
+<div class="modal-overlay" id="detailModal">
+  <div class="detail-modal">
+    <span class="modal-close" id="closeDetailModal">&times;</span>
+    <div id="detailContent"></div>
+  </div>
+</div>
+
+<!-- Live Tracking Modal -->
+<div class="modal-overlay" id="trackingModal">
+  <div class="cart-modal">
+    <!-- Content will be dynamically generated -->
+  </div>
+</div>
+
+<script>
+  (function(){
+    "use strict";
+
+    // ---------- DATA ----------
+    const toursData = [
+      { id:1, title:"Hunza Valley Retreat", location:"Hunza", image:"https://images.pexels.com/photos/4100130/pexels-photo-4100130.jpeg?auto=compress&cs=tinysrgb&w=800", duration:"5 Days", basePrice:42500, badge:"Top Rated",
+        description: "Explore the majestic Hunza valley with historic forts and local culture.",
+        options: [ { name: "Standard Package", price: 42500, details: "3-star hotels, shared transport" }, { name: "Deluxe Package", price: 58900, details: "4-star boutique stay, private car" } ]
+      },
+      { id:2, title:"Skardu Cold Desert", location:"Skardu", image:"https://images.pexels.com/photos/417074/pexels-photo-417074.jpeg?auto=compress&cs=tinysrgb&w=800", duration:"7 Days", basePrice:58900, badge:"Popular", options: [{ name:"Standard", price:58900 }, { name:"Luxury Camp", price:72900 }] },
+      { id:3, title:"Naran Kaghan Escape", location:"Naran", image:"https://images.pexels.com/photos/2086621/pexels-photo-2086621.jpeg?auto=compress&cs=tinysrgb&w=800", duration:"3 Days", basePrice:24900, badge:"Weekend", options: [{ name:"Economy", price:24900 }, { name:"Premium", price:31900 }] },
+      { id:4, title:"Swat Valley Serenity", location:"Swat", image:"https://images.pexels.com/photos/1619317/pexels-photo-1619317.jpeg?auto=compress&cs=tinysrgb&w=800", duration:"4 Days", basePrice:31500, badge:"Nature", options: [{ name:"Standard", price:31500 }, { name:"Deluxe", price:39900 }] },
+      { id:5, title:"Fairy Meadows Trek", location:"Naran", image:"https://images.pexels.com/photos/1547813/pexels-photo-1547813.jpeg?auto=compress&cs=tinysrgb&w=800", duration:"6 Days", basePrice:47900, badge:"Adventure", options: [{ name:"Trekker", price:47900 }, { name:"Comfort Camp", price:56900 }] },
+      { id:6, title:"Deosai Plains Safari", location:"Skardu", image:"https://images.pexels.com/photos/247599/pexels-photo-247599.jpeg?auto=compress&cs=tinysrgb&w=800", duration:"8 Days", basePrice:68900, badge:"Exclusive", options: [{ name:"Standard", price:68900 }, { name:"Luxury 4x4", price:85900 }] },
+      { id:7, title:"Murree Patriata", location:"Murree", image:"https://images.pexels.com/photos/210243/pexels-photo-210243.jpeg?auto=compress&cs=tinysrgb&w=800", duration:"2 Days", basePrice:15900, badge:"Quick", options: [{ name:"Basic", price:15900 }, { name:"Executive", price:21900 }] },
+      { id:8, title:"Neelum Valley", location:"Neelum", image:"https://images.pexels.com/photos/457882/pexels-photo-457882.jpeg?auto=compress&cs=tinysrgb&w=800", duration:"5 Days", basePrice:38900, badge:"Scenic", options: [{ name:"Standard", price:38900 }, { name:"Premium Jeep", price:45900 }] },
+      { id:9, title:"Kumrat Valley", location:"Swat", image:"https://images.pexels.com/photos/2387873/pexels-photo-2387873.jpeg?auto=compress&cs=tinysrgb&w=800", duration:"4 Days", basePrice:27900, badge:"Hidden Gem", options: [{ name:"Camping", price:27900 }, { name:"Lodge Stay", price:33900 }] },
+      { id:10, title:"Chitral Kalash", location:"Hunza", image:"https://images.pexels.com/photos/2901215/pexels-photo-2901215.jpeg?auto=compress&cs=tinysrgb&w=800", duration:"6 Days", basePrice:52900, badge:"Cultural", options: [{ name:"Cultural tour", price:52900 }, { name:"Heritage plus", price:61900 }] },
+      { id:11, title:"Gwadar Coastal", location:"Gwadar", image:"https://images.pexels.com/photos/189349/pexels-photo-189349.jpeg?auto=compress&cs=tinysrgb&w=800", duration:"3 Days", basePrice:35900, badge:"Beach", options: [{ name:"Standard", price:35900 }, { name:"Beach Resort", price:48900 }] },
+      { id:12, title:"Shogran Siri Paye", location:"Naran", image:"https://images.pexels.com/photos/3278215/pexels-photo-3278215.jpeg?auto=compress&cs=tinysrgb&w=800", duration:"3 Days", basePrice:21900, badge:"Meadows", options: [{ name:"Standard", price:21900 }, { name:"Luxury Cabin", price:28900 }] }
+    ];
+
+    const hotelsData = [
+      { id:1, name:"Pearl Continental", location:"Lahore", image:"https://images.pexels.com/photos/261102/pexels-photo-261102.jpeg?auto=compress&cs=tinysrgb&w=800", basePrice:18500, rating:"5★", type:"Luxury Hotel", rooms: [ { type: "Deluxe Room", price: 18500, amenities: "King bed, city view" }, { type: "Executive Suite", price: 28500, amenities: "Separate living, lounge access" } ] },
+      { id:2, name:"Hunza Serena Inn", location:"Hunza", image:"https://images.pexels.com/photos/271624/pexels-photo-271624.jpeg?auto=compress&cs=tinysrgb&w=800", basePrice:12500, rating:"4★", type:"Boutique Hotel", rooms: [{ type:"Standard", price:12500 }, { type:"Valley View", price:16500 }] },
+      { id:3, name:"Backpacker's Hostel", location:"Islamabad", image:"https://images.pexels.com/photos/545034/pexels-photo-545034.jpeg?auto=compress&cs=tinysrgb&w=800", basePrice:2500, rating:"4.5★", type:"Hostel", rooms: [{ type:"Dorm Bed", price:2500 }, { type:"Private Room", price:4800 }] },
+      { id:4, name:"Skardu View Hotel", location:"Skardu", image:"https://images.pexels.com/photos/1134176/pexels-photo-1134176.jpeg?auto=compress&cs=tinysrgb&w=800", basePrice:8900, rating:"4★", type:"Mountain Lodge", rooms: [{ type:"Standard", price:8900 }, { type:"Deluxe", price:12900 }] },
+      { id:5, name:"Fairy Meadows Cottages", location:"Naran", image:"https://images.pexels.com/photos/258154/pexels-photo-258154.jpeg?auto=compress&cs=tinysrgb&w=800", basePrice:6500, rating:"4.2★", type:"Cottage", rooms: [{ type:"Cottage", price:6500 }, { type:"Family Cottage", price:9500 }] },
+      { id:6, name:"Gwadar Beach Resort", location:"Gwadar", image:"https://images.pexels.com/photos/189296/pexels-photo-189296.jpeg?auto=compress&cs=tinysrgb&w=800", basePrice:15500, rating:"4.5★", type:"Resort", rooms: [{ type:"Sea View", price:15500 }, { type:"Villa", price:24500 }] }
+    ];
+
+    const busData = [
+      { route:"Islamabad → Lahore", operator:"Daewoo Express", departure:"08:00, 12:00, 18:00", basePrice:2200, image:"https://images.pexels.com/photos/210143/pexels-photo-210143.jpeg?auto=compress&cs=tinysrgb&w=800", seats: [{ type:"Standard", price:2200 }, { type:"Executive", price:2900 }] },
+      { route:"Karachi → Hyderabad", operator:"Faisal Movers", departure:"Every hour", basePrice:850, image:"https://images.pexels.com/photos/164634/pexels-photo-164634.jpeg?auto=compress&cs=tinysrgb&w=800", seats: [{ type:"Standard", price:850 }, { type:"Business", price:1200 }] },
+      { route:"Lahore → Multan", operator:"Niazi Express", departure:"09:30, 14:30, 21:00", basePrice:1600, image:"https://images.pexels.com/photos/1149831/pexels-photo-1149831.jpeg?auto=compress&cs=tinysrgb&w=800", seats: [{ type:"Economy", price:1600 }, { type:"Executive", price:2100 }] },
+      { route:"Peshawar → Abbottabad", operator:"Skyways", departure:"07:00, 11:00, 16:00", basePrice:1100, image:"https://images.pexels.com/photos/1114897/pexels-photo-1114897.jpeg?auto=compress&cs=tinysrgb&w=800", seats: [{ type:"Standard", price:1100 }, { type:"Luxury", price:1500 }] },
+      { route:"Rawalpindi → Murree", operator:"Local Coaster", departure:"06:00 - 20:00 (hourly)", basePrice:550, image:"https://images.pexels.com/photos/210143/pexels-photo-210143.jpeg?auto=compress&cs=tinysrgb&w=800", seats: [{ type:"Regular", price:550 }, { type:"AC Coaster", price:750 }] },
+      { route:"Quetta → Ziarat", operator:"Bolan Express", departure:"08:00, 14:00", basePrice:1200, image:"https://images.pexels.com/photos/164634/pexels-photo-164634.jpeg?auto=compress&cs=tinysrgb&w=800", seats: [{ type:"Standard", price:1200 }, { type:"Executive", price:1600 }] }
+    ];
+
+    const flightsData = [
+      { id:1, airline:"PIA", route:"Islamabad → Karachi", departure:"10:30", arrival:"12:45", basePrice:12999, image:"https://images.pexels.com/photos/46148/aircraft-jet-landing-cloud-46148.jpeg?auto=compress&cs=tinysrgb&w=800", badge:"Non-stop", classes: [{ type:"Economy", price:12999, seats: 12 }, { type:"Business", price:24999, seats: 4 }] },
+      { id:2, airline:"AirBlue", route:"Lahore → Dubai", departure:"03:20", arrival:"06:10", basePrice:45999, image:"https://images.pexels.com/photos/164589/pexels-photo-164589.jpeg?auto=compress&cs=tinysrgb&w=800", badge:"Direct", classes: [{ type:"Economy", price:45999 }, { type:"Business", price:89999 }] },
+      { id:3, airline:"SereneAir", route:"Karachi → Islamabad", departure:"14:00", arrival:"16:15", basePrice:11999, image:"https://images.pexels.com/photos/358220/pexels-photo-358220.jpeg?auto=compress&cs=tinysrgb&w=800", badge:"Non-stop", classes: [{ type:"Economy", price:11999 }, { type:"Business", price:21999 }] },
+      { id:4, airline:"PIA", route:"Islamabad → Skardu", departure:"07:45", arrival:"09:10", basePrice:18500, image:"https://images.pexels.com/photos/1486785/pexels-photo-1486785.jpeg?auto=compress&cs=tinysrgb&w=800", badge:"Scenic", classes: [{ type:"Economy", price:18500 }, { type:"Business", price:32500 }] },
+      { id:5, airline:"Fly Jinnah", route:"Lahore → Karachi", departure:"18:30", arrival:"20:15", basePrice:13500, image:"https://images.pexels.com/photos/46148/aircraft-jet-landing-cloud-46148.jpeg?auto=compress&cs=tinysrgb&w=800", badge:"Non-stop", classes: [{ type:"Economy", price:13500 }, { type:"Business", price:25900 }] },
+      { id:6, airline:"Air Sial", route:"Islamabad → Jeddah", departure:"22:00", arrival:"02:30+1", basePrice:87999, image:"https://images.pexels.com/photos/358220/pexels-photo-358220.jpeg?auto=compress&cs=tinysrgb&w=800", badge:"International", classes: [{ type:"Economy", price:87999 }, { type:"Business", price:159999 }] }
+    ];
+
+    // ---------- GLOBAL STATE ----------
+    let currentUser = JSON.parse(localStorage.getItem('wanderUser')) || null;
+    let isLoginMode = true;
+    const itemsPerPage = 6;
+    let currentPage = 1;
+    let filteredTours = [...toursData];
+    let cart = JSON.parse(localStorage.getItem('wanderCart')) || [];
+    let currentLang = 'en';
+
+    // DOM elements
+    const toursContainer = document.getElementById('toursContainer');
+    const paginationDiv = document.getElementById('pagination');
+    const locationFilter = document.getElementById('locationFilter');
+    const priceFilter = document.getElementById('priceFilter');
+    const durationFilter = document.getElementById('durationFilter');
+    const resetBtn = document.getElementById('resetFilters');
+    const searchInput = document.getElementById('searchDestination');
+    const searchBtn = document.getElementById('searchBtn');
+    const contactForm = document.getElementById('contactForm');
+    const authModal = document.getElementById('authModal');
+    const authForm = document.getElementById('authForm');
+    const authArea = document.getElementById('authArea');
+    const receiptModal = document.getElementById('receiptModal');
+    const receiptContent = document.getElementById('receiptContent');
+    const cartModal = document.getElementById('cartModal');
+    const cartToggleBtn = document.getElementById('cartToggleBtn');
+    const cartItemsContainer = document.getElementById('cartItemsContainer');
+    const cartTotalSpan = document.getElementById('cartTotal');
+    const cartCountSpan = document.getElementById('cartCount');
+    const checkoutModal = document.getElementById('checkoutModal');
+    const checkoutForm = document.getElementById('checkoutForm');
+    const checkoutTotalDisplay = document.getElementById('checkoutTotalDisplay');
+    const payLaterCheckbox = document.getElementById('payLaterCheckbox');
+    const paymentMethodGroup = document.getElementById('paymentMethodGroup');
+    const checkoutPayment = document.getElementById('checkoutPayment');
+    const detailModal = document.getElementById('detailModal');
+    const detailContent = document.getElementById('detailContent');
+    const trackingModal = document.getElementById('trackingModal');
+
+    // Translations
+    const translations = {
+      en: { home:"Home", flights:"Flights", tours:"Tours", hotels:"Hotels", buses:"Buses", contact:"Contact", login:"Login", logout:"Logout", addToCart:"Add to Cart", bookNow:"Book Now" },
+      ur: { home:"ہوم", flights:"پروازیں", tours:"ٹور", hotels:"ہوٹل", buses:"بسیں", contact:"رابطہ", login:"لاگ ان", logout:"لاگ آؤٹ", addToCart:"کارٹ میں ڈالیں", bookNow:"ابھی بک کریں" }
+    };
+
+    // ---------- HELPER FUNCTIONS ----------
+    function saveCart() { localStorage.setItem('wanderCart', JSON.stringify(cart)); updateCartUI(); }
+    function updateCartUI() {
+      const total = cart.reduce((sum, item) => sum + (item.price * (item.quantity || 1)), 0);
+      const itemCount = cart.reduce((sum, item) => sum + (item.quantity || 1), 0);
+      cartCountSpan.textContent = itemCount;
+      cartTotalSpan.textContent = `Total: PKR ${total.toLocaleString()}`;
+      if(checkoutTotalDisplay) checkoutTotalDisplay.textContent = `Total: PKR ${total.toLocaleString()}`;
+      renderCartItems();
+    }
+    function renderCartItems() {
+      if (cart.length === 0) { cartItemsContainer.innerHTML = '<p style="text-align:center; padding:20px;">Your cart is empty.</p>'; return; }
+      let html = '';
+      cart.forEach((item, index) => {
+        const qty = item.quantity || 1;
+        const itemTotal = item.price * qty;
+        const variantText = item.variant ? ` (${item.variant})` : '';
+        html += `<div class="cart-item" data-index="${index}">
+          <div class="cart-item-info">
+            <div class="cart-item-title">${item.type}: ${item.name}${variantText}</div>
+            <div class="cart-item-price">PKR ${item.price.toLocaleString()} per person</div>
+            <div class="cart-item-quantity">
+              <button class="qty-btn cart-qty-dec" data-index="${index}">−</button>
+              <span>${qty}</span>
+              <button class="qty-btn cart-qty-inc" data-index="${index}">+</button>
+              <span style="margin-left:12px;">= PKR ${itemTotal.toLocaleString()}</span>
+            </div>
+          </div>
+          <span class="cart-remove" data-index="${index}"><i class="fas fa-trash-alt"></i></span>
+        </div>`;
+      });
+      cartItemsContainer.innerHTML = html;
+      document.querySelectorAll('.cart-qty-inc').forEach(btn => btn.addEventListener('click', (e) => { const idx = e.currentTarget.dataset.index; if (cart[idx]) { cart[idx].quantity = (cart[idx].quantity || 1) + 1; saveCart(); } }));
+      document.querySelectorAll('.cart-qty-dec').forEach(btn => btn.addEventListener('click', (e) => { const idx = e.currentTarget.dataset.index; if (cart[idx]) { const newQty = (cart[idx].quantity || 1) - 1; if (newQty <= 0) cart.splice(idx,1); else cart[idx].quantity = newQty; saveCart(); } }));
+      document.querySelectorAll('.cart-remove').forEach(btn => btn.addEventListener('click', (e) => { const idx = e.currentTarget.dataset.index; cart.splice(idx,1); saveCart(); }));
+    }
+    function addToCart(item) { if (!currentUser) { alert('Please login to add items.'); openAuthModal('login'); return; } cart.push({ ...item, quantity: 1 }); saveCart(); alert(`✅ ${item.name} added!`); }
+    function clearCart() { cart = []; saveCart(); }
+
+    // ---------- LIVE TRACKING MODAL WITH ROUTE CITIES ----------
+    function showTrackingModal(routeString) {
+      const cities = routeString.split(/[→\-]/).map(s => s.trim()).filter(s => s);
+      const start = cities[0] || 'Current Location';
+      const end = cities[cities.length - 1] || 'Destination';
+      let intermediate = [];
+      if (routeString.includes('Islamabad') && routeString.includes('Lahore')) intermediate = ['Rawalpindi', 'Jhelum', 'Gujrat', 'Gujranwala'];
+      else if (routeString.includes('Islamabad') && routeString.includes('Karachi')) intermediate = ['Lahore', 'Multan', 'Sukkur', 'Hyderabad'];
+      else if (routeString.includes('Lahore') && routeString.includes('Karachi')) intermediate = ['Sahiwal', 'Multan', 'Rahim Yar Khan', 'Hyderabad'];
+      else if (routeString.includes('Peshawar') && routeString.includes('Abbottabad')) intermediate = ['Nowshera', 'Havelian'];
+      else if (routeString.includes('Karachi') && routeString.includes('Hyderabad')) intermediate = ['Thatta', 'Jamshoro'];
+      else intermediate = ['City A', 'City B'];
+      const allStops = [start, ...intermediate, end];
+      let stopsHtml = '';
+      allStops.forEach((city, i) => {
+        stopsHtml += `<div class="tracking-stop"><span class="stop-num">${i+1}</span><span>${city}</span>${i < allStops.length-1 ? '<i class="fas fa-arrow-right" style="margin:0 12px; color:#e67e22;"></i>' : ''}</div>`;
+      });
+      const modalContent = document.querySelector('#trackingModal .cart-modal');
+      modalContent.innerHTML = `
+        <span class="modal-close" id="closeTrackingModal">&times;</span>
+        <h3><i class="fas fa-map-marked-alt"></i> Live Tracking: ${start} to ${end}</h3>
+        <div style="background:#f0f4fa; border-radius:16px; padding:20px; margin:16px 0;">${stopsHtml}</div>
+        <div style="height:200px; background:#e9ecef; display:flex; align-items:center; justify-content:center; border-radius:16px; flex-direction:column;">
+          <i class="fas fa-bus fa-3x" style="color:#0a3d62; margin-bottom:12px;"></i>
+          <p>📍 Currently near <strong>${intermediate[0] || start}</strong> (Simulated)</p>
+          <p style="font-size:0.9rem; margin-top:8px;">Estimated arrival: 2h 15min</p>
+        </div>
+        <button class="btn-primary" id="refreshTrackingBtn" style="margin-top:20px;">Refresh Location</button>
+      `;
+      document.getElementById('closeTrackingModal').addEventListener('click', () => trackingModal.classList.remove('active'));
+      document.getElementById('refreshTrackingBtn').addEventListener('click', () => alert('📍 Location updated! Still near ' + (intermediate[0] || start) + ' (Simulated)'));
+      trackingModal.classList.add('active');
+    }
+
+    // ---------- DETAIL MODAL WITH DYNAMIC SEATS ----------
+    function openDetailModal(item, type) {
+      let html = '';
+      const renderSeatGrid = (totalSeats, availableCount) => {
+        const grid = document.getElementById('seatGrid');
+        if (!grid) return;
+        grid.innerHTML = '';
+        for (let i = 1; i <= totalSeats; i++) {
+          const seat = document.createElement('div');
+          seat.className = 'seat' + (i > availableCount ? ' unavailable' : '');
+          seat.textContent = i;
+          seat.addEventListener('click', () => {
+            if (!seat.classList.contains('unavailable')) {
+              grid.querySelectorAll('.seat').forEach(s => s.classList.remove('selected'));
+              seat.classList.add('selected');
+            }
+          });
+          grid.appendChild(seat);
+        }
+      };
+
+      if (type === 'flight') {
+        html = `<div class="detail-img" style="background-image:url('${item.image}')"></div>
+                <h3>${item.airline} · ${item.route}</h3>
+                <p><i class="fas fa-clock"></i> ${item.departure} - ${item.arrival}  ·  <span class="badge-info">${item.badge}</span></p>
+                <div class="rating-stars">★★★★☆ (4.2) · 128 reviews</div>
+                <h4 style="margin:20px 0 10px;">Select Class</h4>`;
+        item.classes.forEach(cls => {
+          html += `<div class="variant-option" data-variant="${cls.type}" data-price="${cls.price}" data-seats="${cls.seats || 12}">
+            <div><strong>${cls.type}</strong>  ·  PKR ${cls.price.toLocaleString()}</div>
+            <span>${cls.seats || 12} seats total</span>
+          </div>`;
+        });
+        html += `<h4 style="margin-top:20px;">Select Seat</h4><div class="seat-grid" id="seatGrid"></div>`;
+      } else if (type === 'hotel') {
+        html = `<div class="detail-img" style="background-image:url('${item.image}')"></div>
+                <h3>${item.name}</h3><p><i class="fas fa-map-pin"></i> ${item.location}  ·  ${item.rating}  ·  ${item.type}</p>
+                <div class="rating-stars">★★★★☆ (4.5) · 89 reviews</div>
+                <h4>Room types</h4>`;
+        item.rooms.forEach(room => {
+          html += `<div class="variant-option" data-variant="${room.type}" data-price="${room.price}">
+            <div><strong>${room.type}</strong>  ·  PKR ${room.price.toLocaleString()}/night</div>
+            <span>${room.amenities || ''}</span>
+          </div>`;
+        });
+      } else if (type === 'tour') {
+        html = `<div class="detail-img" style="background-image:url('${item.image}')"></div>
+                <h3>${item.title}</h3><p><i class="fas fa-map-pin"></i> ${item.location} · ${item.duration} · ${item.badge}</p>
+                <p>${item.description || 'Experience the best of Pakistan.'}</p>
+                <div class="rating-stars">★★★★★ (5.0) · 52 reviews</div>
+                <h4>Package options</h4>`;
+        item.options.forEach(opt => {
+          html += `<div class="variant-option" data-variant="${opt.name}" data-price="${opt.price}">
+            <div><strong>${opt.name}</strong>  ·  PKR ${opt.price.toLocaleString()}</div>
+            <span>${opt.details || ''}</span>
+          </div>`;
+        });
+      } else if (type === 'bus') {
+        html = `<div class="detail-img" style="background-image:url('${item.image}')"></div>
+                <h3>${item.route}</h3><p>${item.operator} · Departures: ${item.departure}</p>
+                <div class="rating-stars">★★★★☆ (4.0) · 36 reviews</div>
+                <h4>Seat type</h4>`;
+        item.seats.forEach(seat => {
+          const seatCount = seat.type === 'Executive' || seat.type === 'Business' ? 12 : 20;
+          html += `<div class="variant-option" data-variant="${seat.type}" data-price="${seat.price}" data-seats="${seatCount}">
+            <div><strong>${seat.type}</strong>  ·  PKR ${seat.price.toLocaleString()}</div>
+            <span>${seatCount} seats</span>
+          </div>`;
+        });
+        html += `<h4 style="margin-top:20px;">Select Seat</h4><div class="seat-grid" id="seatGrid"></div>`;
+      }
+
+      if (type === 'flight' || type === 'bus') {
+        html += `<button class="track-btn" id="trackVehicleBtn"><i class="fas fa-map-marker-alt"></i> Track Live Location</button>`;
+      }
+      html += `<button class="btn-primary" id="detailAddToCart" style="margin-top:20px; width:100%;">Add to Cart</button>`;
+      detailContent.innerHTML = html;
+
+      // Initialize seat grid
+      if (type === 'flight' || type === 'bus') {
+        const firstVariant = detailContent.querySelector('.variant-option');
+        if (firstVariant) {
+          firstVariant.classList.add('selected');
+          const total = parseInt(firstVariant.dataset.seats) || 12;
+          const available = type === 'flight' ? Math.max(4, total - Math.floor(total * 0.2)) : total;
+          renderSeatGrid(total, available);
+        }
+      }
+
+      // Variant selection -> update seat grid
+      detailContent.querySelectorAll('.variant-option').forEach(opt => {
+        opt.addEventListener('click', function() {
+          detailContent.querySelectorAll('.variant-option').forEach(o => o.classList.remove('selected'));
+          this.classList.add('selected');
+          if (type === 'flight' || type === 'bus') {
+            const total = parseInt(this.dataset.seats) || 12;
+            const available = type === 'flight' ? Math.max(4, total - Math.floor(total * 0.2)) : total;
+            renderSeatGrid(total, available);
+          }
+        });
+      });
+
+      // Track button
+      document.getElementById('trackVehicleBtn')?.addEventListener('click', () => {
+        showTrackingModal(item.route || item.title || item.name);
+      });
+
+      // Add to cart
+      document.getElementById('detailAddToCart').addEventListener('click', () => {
+        const selected = detailContent.querySelector('.variant-option.selected');
+        if (!selected) { alert('Please select an option'); return; }
+        const variant = selected.dataset.variant;
+        const price = parseInt(selected.dataset.price);
+        let name = item.name || item.title || item.route || item.airline + ' ' + item.route;
+        if (type === 'flight') name = `${item.airline} ${item.route}`;
+        if (type === 'bus') name = item.route;
+        if ((type === 'flight' || type === 'bus') && !document.querySelector('.seat.selected')) {
+          alert('Please select a seat'); return;
+        }
+        addToCart({ type: type.charAt(0).toUpperCase() + type.slice(1), name, price, variant });
+        detailModal.classList.remove('active');
+      });
+
+      detailModal.classList.add('active');
+    }
+
+    // Render functions (unchanged except for quick-add listeners)
+    function renderFlights() {
+      const grid = document.getElementById('flightsContainer');
+      let html = '';
+      flightsData.forEach(f => {
+        html += `<div class="flight-card" data-id="${f.id}" data-type="flight">
+          <div class="card-img" style="background-image:url('${f.image}');"><span class="flight-badge">${f.badge}</span></div>
+          <div class="card-content"><div class="flight-route"><i class="fas fa-plane"></i> ${f.route}</div><h3>${f.airline}</h3>
+          <div class="flight-meta"><span>Dep: ${f.departure}</span><span>Arr: ${f.arrival}</span></div>
+          <div class="price-row"><div class="price">from PKR ${f.basePrice.toLocaleString()}</div><button class="cart-add-btn quick-add" data-type="flight" data-item='${JSON.stringify(f)}'>Add</button></div></div>
+        </div>`;
+      });
+      grid.innerHTML = html;
+    }
+    function renderHotels() {
+      const grid = document.getElementById('hotelsContainer');
+      let html = '';
+      hotelsData.forEach(h => {
+        html += `<div class="hotel-card" data-id="${h.id}" data-type="hotel">
+          <div class="card-img" style="background-image:url('${h.image}');"><span class="hotel-badge">${h.rating}</span></div>
+          <div class="card-content"><div class="hotel-location"><i class="fas fa-map-pin"></i> ${h.location}</div><h3>${h.name}</h3>
+          <div class="hotel-meta"><span>${h.type}</span></div><div class="price-row"><div class="price">from PKR ${h.basePrice.toLocaleString()}</div>
+          <button class="cart-add-btn quick-add" data-type="hotel" data-item='${JSON.stringify(h)}'>Add</button></div></div>
+        </div>`;
+      });
+      grid.innerHTML = html;
+    }
+    function renderBuses() {
+      const grid = document.getElementById('busContainer');
+      let html = '';
+      busData.forEach(b => {
+        html += `<div class="bus-card" data-type="bus">
+          <div class="bus-img" style="background-image:url('${b.image}');"></div><div class="bus-details"><div class="bus-route">${b.route}</div>
+          <div class="bus-operator">${b.operator}</div><div class="bus-price">from PKR ${b.basePrice.toLocaleString()}</div>
+          <button class="btn-outline quick-add" data-type="bus" data-item='${JSON.stringify(b)}'>View / Add</button></div>
+        </div>`;
+      });
+      grid.innerHTML = html;
+      const tbody = document.getElementById('busTableBody'); tbody.innerHTML = '';
+      busData.forEach(b => { 
+        const tr = document.createElement('tr'); 
+        tr.setAttribute('data-type', 'bus-row');
+        tr.innerHTML = `<td>${b.route}</td><td>${b.operator}</td><td>${b.departure}</td><td>${b.basePrice}</td><td><button class="btn-outline quick-add" data-type="bus" data-item='${JSON.stringify(b)}'>Add</button></td>`;
+        tr.addEventListener('click', (e) => { if (e.target.closest('button')) return; openDetailModal(b, 'bus'); });
+        tbody.appendChild(tr); 
+      });
+    }
+
+    // Global click delegation
+    document.addEventListener('click', (e) => {
+      const card = e.target.closest('.flight-card, .hotel-card, .tour-card, .bus-card');
+      if (card && !e.target.closest('button')) {
+        const type = card.dataset.type || (card.classList.contains('tour-card') ? 'tour' : null);
+        let item;
+        if (type === 'flight') item = flightsData.find(f => f.id == card.dataset.id);
+        else if (type === 'hotel') item = hotelsData.find(h => h.id == card.dataset.id);
+        else if (type === 'tour') item = toursData.find(t => t.id == card.dataset.id);
+        else if (card.classList.contains('bus-card')) {
+          const route = card.querySelector('.bus-route')?.innerText;
+          item = busData.find(b => b.route === route);
+          openDetailModal(item, 'bus'); return;
+        }
+        if (item) openDetailModal(item, type);
+      }
+      const quickBtn = e.target.closest('.quick-add');
+      if (quickBtn) {
+        e.stopPropagation();
+        const type = quickBtn.dataset.type;
+        const item = JSON.parse(quickBtn.dataset.item);
+        openDetailModal(item, type);
+      }
+    });
+
+    // Tours filtering & pagination
+    function filterTours() {
+      const loc = locationFilter.value, price = priceFilter.value, dur = durationFilter.value, term = searchInput.value.trim().toLowerCase();
+      filteredTours = toursData.filter(t => {
+        if (loc !== 'all' && t.location !== loc) return false;
+        const p = t.basePrice;
+        if (price === 'budget' && p >= 30000) return false;
+        if (price === 'mid' && (p < 30000 || p > 50000)) return false;
+        if (price === 'luxury' && p <= 50000) return false;
+        const days = parseInt(t.duration);
+        if (dur === 'short' && days > 3) return false;
+        if (dur === 'medium' && (days < 4 || days > 6)) return false;
+        if (dur === 'long' && days < 7) return false;
+        if (term && !t.title.toLowerCase().includes(term) && !t.location.toLowerCase().includes(term)) return false;
+        return true;
+      });
+      currentPage = 1; renderToursPage();
+    }
+    function renderToursPage() {
+      const start = (currentPage-1)*itemsPerPage, paginated = filteredTours.slice(start, start+itemsPerPage);
+      let html = '';
+      paginated.forEach(t => { html += `<div class="tour-card" data-id="${t.id}" data-type="tour"><div class="card-img" style="background-image:url('${t.image}');"><span class="tour-badge">${t.badge}</span></div><div class="card-content"><div class="tour-location"><i class="fas fa-map-pin"></i> ${t.location}</div><h3>${t.title}</h3><div class="tour-meta"><span><i class="far fa-clock"></i> ${t.duration}</span></div><div class="price-row"><div class="price">from PKR ${t.basePrice.toLocaleString()}</div><button class="cart-add-btn quick-add" data-type="tour" data-item='${JSON.stringify(t)}'>Add</button></div></div></div>`; });
+      toursContainer.innerHTML = html || '<div style="grid-column:1/-1; text-align:center;">No tours found.</div>';
+      const totalPages = Math.ceil(filteredTours.length / itemsPerPage);
+      if (totalPages <= 1) { paginationDiv.innerHTML = ''; return; }
+      let btns = ''; for (let i=1;i<=totalPages;i++) btns += `<button class="page-btn ${i===currentPage?'active':''}" data-page="${i}">${i}</button>`;
+      paginationDiv.innerHTML = btns;
+      document.querySelectorAll('.page-btn').forEach(btn => btn.addEventListener('click', (e) => { currentPage = parseInt(e.target.dataset.page); renderToursPage(); }));
+    }
+    function resetAll() { locationFilter.value='all'; priceFilter.value='all'; durationFilter.value='all'; searchInput.value=''; filterTours(); renderFlights(); renderHotels(); renderBuses(); }
+    locationFilter.addEventListener('change', filterTours); priceFilter.addEventListener('change', filterTours); durationFilter.addEventListener('change', filterTours); resetBtn.addEventListener('click', resetAll);
+    searchBtn.addEventListener('click', ()=>{ filterTours(); });
+
+    // Auth & UI
+    function updateAuthUI() {
+      if (currentUser) {
+        authArea.innerHTML = `<span class="user-greeting"><i class="fas fa-user-circle"></i> ${currentUser.name} <button class="btn-outline" id="logoutBtn">Logout</button></span>`;
+        document.getElementById('logoutBtn')?.addEventListener('click', logout);
+      } else {
+        authArea.innerHTML = `<a href="#" class="login-btn" id="showAuthBtn">Login</a>`;
+        document.getElementById('showAuthBtn')?.addEventListener('click', (e) => { e.preventDefault(); openAuthModal('login'); });
+      }
+      checkAdmin();
+    }
+    function openAuthModal(mode) { isLoginMode = (mode === 'login'); document.getElementById('authModalTitle').textContent = isLoginMode ? 'Login' : 'Sign Up'; document.getElementById('authSubmitBtn').textContent = isLoginMode ? 'Login' : 'Sign Up'; document.getElementById('authNameGroup').style.display = isLoginMode ? 'none' : 'block'; document.getElementById('toggleAuthText').textContent = isLoginMode ? "Don't have an account?" : "Already have an account?"; document.getElementById('toggleAuthLink').textContent = isLoginMode ? 'Sign up' : 'Login'; authModal.classList.add('active'); }
+    function logout() { currentUser = null; localStorage.removeItem('wanderUser'); updateAuthUI(); clearCart(); }
+    authForm.addEventListener('submit', (e) => {
+      e.preventDefault(); const email = document.getElementById('authEmail').value, pass = document.getElementById('authPassword').value, name = document.getElementById('authName').value;
+      if (isLoginMode) { currentUser = { email, name: email.split('@')[0] }; localStorage.setItem('wanderUser', JSON.stringify(currentUser)); updateAuthUI(); authModal.classList.remove('active'); alert('Login successful'); }
+      else { if (!name) { alert('Name required'); return; } currentUser = { email, name }; localStorage.setItem('wanderUser', JSON.stringify(currentUser)); updateAuthUI(); authModal.classList.remove('active'); alert('Account created!'); }
+    });
+    document.getElementById('toggleAuthLink').addEventListener('click', (e) => { e.preventDefault(); openAuthModal(isLoginMode ? 'signup' : 'login'); });
+
+    // Checkout & Pay Later with email simulation
+    function saveBooking(user, cartItems, total) {
+      const bookings = JSON.parse(localStorage.getItem('wanderBookings')) || [];
+      bookings.push({ user: user.name, item: cartItems.map(i=>i.name).join(', '), total, date: new Date().toLocaleString() });
+      localStorage.setItem('wanderBookings', JSON.stringify(bookings));
+    }
+    function sendConfirmationEmail(userEmail) { alert(`📧 Confirmation email sent to ${userEmail} (simulated)`); }
+    payLaterCheckbox.addEventListener('change', () => { paymentMethodGroup.style.display = payLaterCheckbox.checked ? 'none' : 'block'; if (payLaterCheckbox.checked) checkoutPayment.value = ''; });
+    checkoutForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      if (!currentUser) { alert('Please login first'); return; }
+      const name = document.getElementById('checkoutName').value;
+      const email = document.getElementById('checkoutEmail').value;
+      const isPayLater = payLaterCheckbox.checked;
+      if (!isPayLater && !checkoutPayment.value) { alert('Select payment method'); return; }
+      const total = cart.reduce((sum, item) => sum + (item.price * (item.quantity || 1)), 0);
+      const dueDate = new Date(); dueDate.setDate(dueDate.getDate() + 3);
+      let receiptHtml = `<h4>🧾 Booking ${isPayLater ? 'Bill (Pay Later)' : 'Receipt'}</h4><p><strong>${name}</strong> · ${email}</p><div class="receipt-details">`;
+      cart.forEach(item => { receiptHtml += `<div class="receipt-row"><span>${item.type}: ${item.name} ${item.variant?'('+item.variant+')':''} x${item.quantity}</span><span>PKR ${(item.price*item.quantity).toLocaleString()}</span></div>`; });
+      receiptHtml += `</div><div class="receipt-total">Total: PKR ${total.toLocaleString()}</div>`;
+      if (isPayLater) receiptHtml += `<p style="margin-top:16px;background:#fef9e7;padding:12px;border-radius:16px;"><i class="fas fa-calendar-alt"></i> <strong>Pay within 3 days</strong> · Due date: ${dueDate.toLocaleDateString()}</p>`;
+      else receiptHtml += `<p><i class="fas fa-check-circle" style="color:#2ecc71;"></i> Payment via ${checkoutPayment.value}</p>`;
+      receiptContent.innerHTML = receiptHtml;
+      saveBooking(currentUser, cart, total);
+      sendConfirmationEmail(email);
+      checkoutModal.classList.remove('active');
+      receiptModal.classList.add('active');
+      clearCart();
+    });
+
+    // Cart controls
+    document.getElementById('clearCartBtn').addEventListener('click', clearCart);
+    document.getElementById('checkoutFromCartBtn').addEventListener('click', ()=>{ if(cart.length===0) { alert('Cart empty'); return; } cartModal.classList.remove('active'); checkoutModal.classList.add('active'); });
+    document.getElementById('generateBillFromCartBtn').addEventListener('click', ()=>{
+      if(cart.length===0) { alert('Cart empty'); return; }
+      if(!currentUser) { alert('Login required'); return; }
+      const total = cart.reduce((sum, item) => sum + (item.price * (item.quantity || 1)), 0);
+      const dueDate = new Date(); dueDate.setDate(dueDate.getDate() + 3);
+      let html = `<h4>🧾 Bill (Pay Later)</h4><p>${currentUser.name}</p><div class="receipt-details">`;
+      cart.forEach(item => { html += `<div class="receipt-row"><span>${item.type}: ${item.name} ${item.variant?'('+item.variant+')':''} x${item.quantity}</span><span>PKR ${(item.price*item.quantity).toLocaleString()}</span></div>`; });
+      html += `</div><div class="receipt-total">Total: PKR ${total.toLocaleString()}</div><p style="margin-top:16px;background:#fef9e7;padding:12px;border-radius:16px;"><i class="fas fa-calendar-alt"></i> <strong>Pay within 3 days</strong> · Due: ${dueDate.toLocaleDateString()}</p>`;
+      receiptContent.innerHTML = html;
+      cartModal.classList.remove('active');
+      receiptModal.classList.add('active');
+      clearCart();
+    });
+
+    // Modal close events
+    document.querySelectorAll('.modal-close').forEach(btn => btn.addEventListener('click', function(){ this.closest('.modal-overlay').classList.remove('active'); }));
+    document.querySelectorAll('.modal-overlay').forEach(m => m.addEventListener('click', (e) => { if (e.target === m) m.classList.remove('active'); }));
+    cartToggleBtn.addEventListener('click', ()=> cartModal.classList.add('active'));
+    document.getElementById('printReceiptBtn').addEventListener('click', ()=> window.print());
+    contactForm.addEventListener('submit', (e) => { e.preventDefault(); alert('Message sent!'); contactForm.reset(); });
+
+    // Admin Panel Logic
+    function checkAdmin() {
+      if(currentUser && currentUser.email === 'admin@wander.pk') {
+        document.getElementById('adminPanel').style.display = 'block';
+        loadAdminBookings();
+      } else {
+        document.getElementById('adminPanel').style.display = 'none';
+      }
+    }
+    function loadAdminBookings() {
+      const bookings = JSON.parse(localStorage.getItem('wanderBookings')) || [];
+      const list = document.getElementById('adminBookingsList');
+      list.innerHTML = bookings.map(b => `<li>${b.user} - ${b.item} (PKR ${b.total})</li>`).join('');
+    }
+
+    // Language Toggle
+    function applyTranslations() {
+      const navLinks = document.querySelectorAll('.nav-links a');
+      const keys = ['home','flights','tours','hotels','buses','contact'];
+      navLinks.forEach((link, i) => { if(i<keys.length) link.textContent = translations[currentLang][keys[i]]; });
+      document.querySelectorAll('.lang-btn').forEach(btn => btn.classList.toggle('active', btn.dataset.lang === currentLang));
+    }
+    document.querySelectorAll('.lang-btn').forEach(btn => btn.addEventListener('click', () => { currentLang = btn.dataset.lang; applyTranslations(); }));
+
+    // Init
+    updateAuthUI(); updateCartUI(); renderToursPage(); renderFlights(); renderHotels(); renderBuses(); applyTranslations();
+  })();
+</script>
+</body>
+</html>
